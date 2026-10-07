@@ -1,4 +1,5 @@
 import { ANALYTICS } from './config.js';
+import { round2 } from './game.js';
 
 /**
  * Product + technical metrics. Listens to the Game's domain events and a few page-level hooks
@@ -18,7 +19,6 @@ import { ANALYTICS } from './config.js';
  */
 
 const uid = () => crypto.randomUUID();
-const round2 = n => Math.round((n + Number.EPSILON) * 100) / 100;   // ponytail: local copy until js/game.js (step 5) exports the shared one
 const store = {
   get(k) { try { return localStorage.getItem(k); } catch { return null; } },
   set(k, v) { try { localStorage.setItem(k, v); } catch { /* private mode */ } },
