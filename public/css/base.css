@@ -1,0 +1,27 @@
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: #0b0c10; overflow: hidden; touch-action: manipulation; }   /* no double-tap-to-zoom / pinch-zoom from repeated taps (mobile bug report) */
+/* long-press anywhere in the game used to trigger the browser's own text-selection / "Copy" callout
+   (mobile bug report) - user-select alone doesn't stop iOS's callout menu, -webkit-touch-callout does */
+body {
+  font-family: var(--font-ui); color: var(--color-text); -webkit-font-smoothing: antialiased;
+  -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
+  -webkit-touch-callout: none;
+}
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; margin: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+button:disabled { cursor: default; }
+ul { list-style: none; margin: 0; padding: 0; }
+h1, h2, p { margin: 0; }
+hr { border: 0; }
+[hidden] { display: none !important; }
+
+/* 1920x1080 design canvas, uniformly scaled to the window by js/main.js (--stage-scale) */
+.stage {
+  position: absolute;
+  left: 0; top: 0;
+  width: var(--stage-w);
+  height: var(--stage-h);
+  background: var(--color-bg-page);
+  transform-origin: 0 0;
+  transform: translate(var(--stage-x, 0px), var(--stage-y, 0px)) scale(var(--stage-scale, 1));
+  overflow: hidden;
+}

@@ -1,0 +1,9 @@
+/*
+  X-Robots-Tag: noindex
+  X-Content-Type-Options: nosniff
+
+/assets/fonts/*
+  Cache-Control: public, max-age=3600, must-revalidate
+
+/assets/audio/*
+  Cache-Control: public, max-age=86400, must-revalidate

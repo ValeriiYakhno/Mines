@@ -1,0 +1,11 @@
+// Cloudflare Workers deploy: a static-assets-only Worker (no server code).
+// Only public/ is uploaded - design/, docs/, notes etc. in the repo are never published.
+// public/_headers is applied by Workers static assets (noindex, nosniff, cache rules).
+// Deployed by Workers Builds on every push to master: `npx wrangler deploy`.
+{
+  "name": "mines",
+  "compatibility_date": "2026-10-07",
+  "assets": {
+    "directory": "./public"
+  }
+}

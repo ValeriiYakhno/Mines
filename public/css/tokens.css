@@ -1,0 +1,46 @@
+/* Design tokens. PLACEHOLDER values inherited from the previous game: replace from the Mines Figma (step 6).
+   Fonts: add @font-face here once the Figma fonts are known (assets/fonts/*.woff2). */
+
+
+:root {
+  /* surfaces */
+  --color-bg-page:      #161824;
+  --color-bg-bar:       #141516;
+  --color-bg-card:      #1a1a19;
+  --color-bg-card-alt:  #21201f;
+  --color-border-bar:   rgba(255, 255, 255, 0.06);
+  --color-border-soft:  #2a2928;
+  --color-border-btn:   #272625;
+
+  /* brand / status */
+  --color-green:        #26a866;
+  --color-green-light:  #5ce07f;
+  --color-green-mint:   #74ca9e;
+  --color-green-fill:   #58bc89;
+  --color-red:          #ed3440;
+  --color-red-fill:     #ff2626;
+  --color-red-text:     #e8452f;
+  --color-yellow:       #f5b719;
+
+  /* text */
+  --color-text:         #ddd;
+  --color-text-bright:  #eee;
+  --color-text-badge:   #e4e8f1;
+  --color-text-muted:   #7b8499;
+  --color-text-locked:  #9c9c9c;
+  --color-text-disabled:#3a3938;
+  --color-text-icon:    #686868;
+
+  /* fonts */
+  --font-ui:      'Fredoka', system-ui, sans-serif;
+  --font-brand:   'Archivo', system-ui, sans-serif;
+
+  /* radii */
+  --radius-btn:   18px;
+  --radius-panel: 22px;
+  --radius-bar:   30px;
+
+  /* layout (design px @1920x1080) */
+  --stage-w: 1920px;
+  --stage-h: 1080px;
+}

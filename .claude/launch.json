@@ -1,0 +1,18 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "mines-demo",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "--yes",
+        "http-server",
+        "public",
+        "-c-1",
+        "--cors"
+      ],
+      "port": 5173,
+      "autoPort": true
+    }
+  ]
+}
