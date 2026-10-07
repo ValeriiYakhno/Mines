@@ -13,6 +13,8 @@ export const GAME = {
   boardCells: [9, 16, 25, 36, 49, 64, 81],
   defaultCells: 25,
   defaultMines: 3,
+  phoneMaxSide: 6,           // phones: up to 6x6 (tiles stay >= 44 px); decided with the designer 2026-10-08
+  bigWinMultiplier: 20,      // placeholder threshold for the Big win dialog, to be decided
 };
 
 // Server-side rules, used ONLY by js/mock-backend.js (the client must never compute outcomes from these).
