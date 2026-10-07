@@ -21,6 +21,16 @@
   - `js/game.js`: headless state machine (`connecting/idle/playing/offline`), `can*` getters, `busy` set synchronously, one request at a time, resume of an open round, resync on wrong-state errors, `round2`, bet sanitising/clamping. `analytics.js` now imports `round2` from it.
   - `tests/game.test.mjs`: 15 checks, run with `npm test` (node:test, no dependencies), all pass.
 
+- 2026-10-08 Step 6 started (branch , stacked on  because the concepts use the real Game + MockBackend): two playable concepts instead of porting the Figma straight away, see below.
+
+## Figma and concepts
+- Figma file : one page "reference" (node 0:1) with 63 reference screenshots in 7 columns (by x). No Mines design frames yet.
+- Liked by the user: column 2 = "Mummy's Mines" (Egyptian tomb, purple stone panel, gold button) and column 5 = "Mines 2" (dark navy glass UI, left bet panel, boost meter). The user does not like the UX of the references (Start button over the board, settings in a tall left panel, tiny controls).
+- Concept A "Tomb" () and concept B "Glass" (): own art in these two moods, not copies. Shared structure:  (binds the real Game) and ; each concept only has  +  + . Run: dev server config  (port 5174, root of the repo), open  or .
+- UX decisions for both: the board is never covered; one action button in one fixed place (PLAY / PICK A TILE / CASH OUT with the amount / PLAY AGAIN); settings (mines, field, bet) are locked during a round; readouts (multiplier, win, next tile) and the multiplier ladder sit next to the board on desktop and above it on phones; result banner is in the flow above the board; phones: board on top, thumb-reach dock below (bet, mines, field, one big button). Concept A has the dock under the board, concept B a side panel on the left.
+- Art: generated with Higgsfield (model nano_banana_2, the only one the free plan accepts), white backgrounds cut out locally (Pillow flood fill), converted to WebP. Sources  are git-ignored. Higgsfield credits: 12 before, 0.5 after (7 images + 1 failed cut-out; nano_banana_2 costs ~1.5 credits per image, I did not preflight it).
+- Skills installed globally:  (leonxlnx/taste-skill) and  (wearescientist/awesome-design-md). The taste skill is for landing pages, so only its general rules were used (one accent, shape lock, contrast, no AI slop); icons are Phosphor.
+
 ## Rules (measured on the emulator, 5x5 / 3 mines unless noted)
 - Board: square 3x3..9x9 (the emulator also has single rows of 3..9 cells, not used). Mines: 1..cells-1. Steps = safe cells, but see the cap below.
 - Multiplier after n safe cells = max(1.00, round2(1 / (p(n) * 1.05))), p(n) = chance to survive n openings (RTP ~95.2%). Checked on 5x5 m=1,3,5,12,24 and 9x9 m=10 (52 rows).
@@ -30,6 +40,8 @@
 - Provably fair: before the round the server shows a hash, after it the "source" (mine cells + salt); the hash is MD5 of the source string (checked). The mock uses SHA-256 and row-major cell indices instead.
 
 ## Not verified
+- Concepts: only checked in the in-app browser at 1440x810 and 390x844, no real phone, no other viewports, no keyboard/screen-reader pass. Fonts and Phosphor icons load from Google Fonts / unpkg (concept only; production must self-host woff2).
+- Missing states to ask the designer: loading/connecting screen, offline/reconnect, tutorial, round history, sound settings panel, jackpot or bonus (the references have them, we have not decided).
 - The real Minefield WebSocket commands (bet / open cell / collect and their replies): api.pdf documents only the generic protocol ("index" parameter = cell, error 16). The interface in backend.js is our abstraction; the adapter must be written when the real spec is known.
 - My brute-force table scan of the emulator was unreliable (page redraws lag), so the formula is confirmed only on the configs listed above.
 - Nothing runs yet: `index.html` is an empty stage.
