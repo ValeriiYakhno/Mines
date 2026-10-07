@@ -1,1 +1,33 @@
-/* Mobile composition (< 768px or portrait), body.layout-mobile. Filled from the Mines Figma in step 6. */
+/* Phone composition (narrow or portrait): top bar, banner, 3 chips, board, one control dock at the bottom. */
+@media (max-width: 899px), (orientation: portrait) {
+  .app { padding: 10px; gap: 16px; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto minmax(0, 1fr) auto; grid-template-areas: "top" "history" "board" "panel"; }
+  .hint, .logo-ph, .readout, .lock-note, .bet-chips, .g-bet .chips { display: none; }
+  .loading .logo-ph { display: grid; width: min(280px, 80vw); min-height: 96px; font-size: 28px; }
+  .top { min-height: 44px; }
+  .balance { padding: 8px 14px; } .balance .lbl, .balance i { display: none; } .balance b { font-size: 18px; }
+  .icon-btn { width: 40px; height: 40px; } .top-actions { gap: 8px; }
+    .history { margin-top: 0; width: 100%; } .history-track { gap: 10px; padding: 2px 24px; } .step-chip { min-height: 36px; padding: 0 14px; font-size: 15px; } .chip { min-height: 36px; padding: 0 16px; font-size: 15px; }
+  .board { --pad: 10px; --gap: 6px; border-radius: 20px; }
+  .board[data-n="6"] { --gap: 5px; }
+  .cell { border-width: 1.5px; border-radius: 12px; }
+  .panel { gap: 12px; padding: 16px; border-radius: 20px; overflow: visible; }
+  .settings { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 10px; }
+  .g-bet { grid-column: 1 / -1; } .g-bet .lbl { display: block; }
+  .group { gap: 6px; }
+  .stepper { grid-template-columns: 44px minmax(0, 1fr) 44px; gap: 6px; }
+  .step, .stepper output, .stepper input, .select-btn { height: 44px; }
+  .stepper output, .stepper input { font-size: 22px; } .select-btn { font-size: 20px; padding: 0 14px; }
+  .risk { display: none; }
+  .spacer { display: none; }
+  .action { min-height: 68px; }
+  .action .a-main { font-size: 24px; }
+  .select-list { top: auto; bottom: calc(100% + 8px); left: auto; right: 0; width: 190px; }
+  .select-list li { min-height: 40px; font-size: 18px; }
+  .pop { position: fixed; z-index: 9; left: 0; right: 0; top: auto; bottom: 0; width: auto; padding: 12px 24px calc(28px + env(safe-area-inset-bottom)); border-radius: 24px 24px 0 0; border-width: 2px 0 0; gap: 16px; align-items: stretch; }
+  .pop h2 { text-align: center; }
+  .pop-handle { display: block; width: 40px; height: 4px; margin: 0 auto; border-radius: 2px; background: var(--line); }
+  .pop-done { display: block; }
+  .dlg { padding: 24px; } .dlg h2 { font-size: 24px; } .dlg p, .rules li { font-size: 16px; }
+  .illustration { height: 130px; }
+  .dlg-buttons .btn { padding: 0 22px; }
+}

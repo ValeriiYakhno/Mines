@@ -49,6 +49,9 @@ export class MusicPlayer {
 
   _load(file) { return loadBuffer(AUDIO_BASE + file); }
 
+  /** 0..1 from the Settings slider; applied to the running track and to the next ones */
+  setVolume(v) { this.volume = v; if (this.active && this.enabled) rampGain(this.active.gain, v, 0.1); }
+
   _preloadAll() { TRACKS.forEach(t => this._load(t.file).catch(() => {})); }
 
   /** control_toggle_music: on = play (unmute if already running, otherwise start the playlist); off = mute */

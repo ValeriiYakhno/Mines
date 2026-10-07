@@ -1,46 +1,29 @@
-/* Design tokens. PLACEHOLDER values inherited from the previous game: replace from the Mines Figma (step 6).
-   Fonts: add @font-face here once the Figma fonts are known (assets/fonts/*.woff2). */
-
-
+/* Design tokens. PLACEHOLDER wireframe palette, same names as the Figma variables in
+   "Mines Color (wireframe)": replace the values when the designer's visual design is ready.
+   Fonts: Sora (display) + DM Sans (body) are placeholders too; self-host as woff2 before production. */
 :root {
-  /* surfaces */
-  --color-bg-page:      #161824;
-  --color-bg-bar:       #141516;
-  --color-bg-card:      #1a1a19;
-  --color-bg-card-alt:  #21201f;
-  --color-border-bar:   rgba(255, 255, 255, 0.06);
-  --color-border-soft:  #2a2928;
-  --color-border-btn:   #272625;
+  --bg-page: #0a1220;
+  --bg-panel: #121c2e;
+  --bg-raised: #1a2740;
+  --line: #2b3a57;
+  --cell-closed: #22314d;
+  --cell-rest: #172238;
+  --text: #eaf1ff;
+  --text-muted: #9fb2d1;
+  --accent: #3ddc84;
+  --accent-ink: #04210f;
+  --accent-tint: #193b3c;
+  --gold: #ffb81f;
+  --gold-ink: #2b1a00;
+  --danger: #ff4d63;
+  --danger-bg: #3a1020;
+  --disabled: #3a4a68;
+  --focus: #8ab4ff;
 
-  /* brand / status */
-  --color-green:        #26a866;
-  --color-green-light:  #5ce07f;
-  --color-green-mint:   #74ca9e;
-  --color-green-fill:   #58bc89;
-  --color-red:          #ed3440;
-  --color-red-fill:     #ff2626;
-  --color-red-text:     #e8452f;
-  --color-yellow:       #f5b719;
+  --font-display: 'Sora', 'DM Sans', system-ui, sans-serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
 
-  /* text */
-  --color-text:         #ddd;
-  --color-text-bright:  #eee;
-  --color-text-badge:   #e4e8f1;
-  --color-text-muted:   #7b8499;
-  --color-text-locked:  #9c9c9c;
-  --color-text-disabled:#3a3938;
-  --color-text-icon:    #686868;
-
-  /* fonts */
-  --font-ui:      'Fredoka', system-ui, sans-serif;
-  --font-brand:   'Archivo', system-ui, sans-serif;
-
-  /* radii */
-  --radius-btn:   18px;
-  --radius-panel: 22px;
-  --radius-bar:   30px;
-
-  /* layout (design px @1920x1080) */
-  --stage-w: 1920px;
-  --stage-h: 1080px;
+  --r-btn: 14px;
+  --r-card: 16px;
+  --r-panel: 24px;
 }

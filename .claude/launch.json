@@ -13,6 +13,19 @@
       ],
       "port": 5173,
       "autoPort": true
+    },
+    {
+      "name": "mines-concepts",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "--yes",
+        "http-server",
+        ".",
+        "-c-1",
+        "--cors"
+      ],
+      "port": 5174,
+      "autoPort": true
     }
   ]
 }

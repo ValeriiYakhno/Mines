@@ -1,15 +1,129 @@
 <!doctype html>
-<html lang="uk">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Mines</title>
+<!-- temporary: placeholder fonts from Google Fonts, self-host woff2 before production -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Sora:wght@600;700&display=swap">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/mobile.css">
+<script src="js/posthog.config.js"></script>
 </head>
 <body>
-<main class="stage"><!-- Mines --></main>
+
+<div class="loading" id="loading" role="status" aria-live="polite">
+  <div class="loading-box">
+    <div class="logo-ph">MINES</div>
+    <div class="progress"><i id="progress-fill"></i></div>
+    <p id="progress-text">Loading 0%</p>
+  </div>
+</div>
+
+<div class="app" id="app" hidden>
+  <header class="top">
+    <div class="balance"><span class="lbl">Balance</span><b id="balance">0.00</b><i id="cur">FUN</i></div>
+    <div class="top-actions">
+      <button class="icon-btn" id="btn-sound" aria-label="Sound" aria-pressed="false"><span>&#9834;</span></button>
+      <button class="icon-btn" id="btn-settings" aria-label="Settings" aria-haspopup="true" aria-expanded="false">&#9881;</button>
+      <button class="icon-btn" id="btn-help" aria-label="How to play">?</button>
+    </div>
+    <div class="pop" id="settings-pop" hidden role="dialog" aria-label="Settings">
+      <div class="pop-handle"></div>
+      <h2>Settings</h2>
+      <button class="row-link" id="row-info">Information<span aria-hidden="true">&rsaquo;</span></button>
+      <div class="row-toggle"><span id="lbl-turbo">Turbo mode</span><button class="switch" id="sw-turbo" role="switch" aria-checked="false" aria-labelledby="lbl-turbo"><i></i></button></div>
+      <div class="row-slider"><label for="rng-music">Music</label><output id="out-music" for="rng-music">70%</output><input type="range" id="rng-music" min="0" max="100" step="1" value="70"></div>
+      <div class="row-slider"><label for="rng-sfx">Sound effects</label><output id="out-sfx" for="rng-sfx">70%</output><input type="range" id="rng-sfx" min="0" max="100" step="1" value="70"></div>
+      <button class="btn primary pop-done" id="pop-done">Done</button>
+    </div>
+  </header>
+
+  <div class="board-wrap"><div class="board" id="board" role="group" aria-label="Game board"></div></div>
+  <p class="hint" id="hint"></p>
+  <div class="history" id="history" aria-label="Multiplier steps"><div class="history-track" id="history-track"></div></div>
+
+  <aside class="panel" id="panel">
+    <div class="logo-ph">MINES</div>
+    <p class="lock-note" id="lock-note" hidden>Locked during the round</p>
+    <div class="settings" id="settings">
+      <div class="group g-bet">
+        <span class="lbl" id="lbl-bet">Bet (<span class="cur-tag">FUN</span>)</span>
+        <div class="stepper">
+          <button class="step" id="bet-dec" aria-label="Lower bet">&minus;</button>
+          <input id="bet-in" inputmode="decimal" autocomplete="off" aria-labelledby="lbl-bet">
+          <button class="step" id="bet-inc" aria-label="Higher bet">+</button>
+        </div>
+        <div class="chips" id="bet-chips"><button class="chip" data-q="half">1/2</button><button class="chip" data-q="double">2x</button><button class="chip" data-q="max">Max</button></div>
+      </div>
+      <div class="group g-mines">
+        <span class="lbl" id="lbl-mines">Mines</span>
+        <div class="stepper">
+          <button class="step" id="mines-dec" aria-label="Fewer mines">&minus;</button>
+          <output id="mines-val" aria-labelledby="lbl-mines">3</output>
+          <button class="step" id="mines-inc" aria-label="More mines">+</button>
+        </div>
+        <span class="risk" id="risk"></span>
+      </div>
+      <div class="group g-field">
+        <span class="lbl" id="lbl-field">Field</span>
+        <div class="select">
+          <button class="select-btn" id="field-btn" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="lbl-field field-btn"><span id="field-val">5 &times; 5</span><i aria-hidden="true">&#9662;</i></button>
+          <ul class="select-list" id="field-list" role="listbox" aria-labelledby="lbl-field" hidden></ul>
+        </div>
+      </div>
+    </div>
+    <div class="spacer"></div>
+    <div class="readout" id="readout"><span class="lbl" id="ro-title"></span><b id="ro-value"></b></div>
+    <button class="action" id="action"><span class="a-main" id="a-main">PLAY</span><span class="a-sub" id="a-sub"></span></button>
+  </aside>
+</div>
+<div class="scrim" id="scrim" hidden></div>
+<div class="toast" id="toast" role="alert"></div>
+
+<dialog class="dlg" id="dlg-tutorial" aria-labelledby="tut-title">
+  <div class="illustration" aria-hidden="true">illustration</div>
+  <h2 id="tut-title"></h2>
+  <p id="tut-text"></p>
+  <div class="dots" id="tut-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="dlg-buttons">
+    <button class="btn ghost" id="tut-skip">Skip</button>
+    <button class="btn secondary" id="tut-back" hidden>Back</button>
+    <span class="grow"></span>
+    <button class="btn primary" id="tut-next">Next</button>
+  </div>
+  <label class="check" id="tut-check" hidden><input type="checkbox" id="tut-dont"><span>Do not show again</span></label>
+</dialog>
+
+<dialog class="dlg" id="dlg-help" aria-labelledby="help-title">
+  <h2 id="help-title">How to play</h2>
+  <ol class="rules">
+    <li><b>1</b><span>Pick the number of mines, the field size and your bet, then press Play.</span></li>
+    <li><b>2</b><span>Open tiles. Every safe tile raises the multiplier, a mine ends the round.</span></li>
+    <li><b>3</b><span>Press Cash out after the first safe tile to take the current win.</span></li>
+    <li><b>4</b><span>More mines means a higher multiplier per tile and a higher risk.</span></li>
+  </ol>
+  <form method="dialog"><button class="btn primary wide">Got it</button></form>
+</dialog>
+
+<dialog class="dlg" id="dlg-offline" aria-labelledby="off-title">
+  <h2 id="off-title">Connection lost</h2>
+  <p>We could not reach the game server. If a round was open, it will be restored when the connection is back.</p>
+  <p class="muted" id="off-code">Error code: -</p>
+  <button class="btn primary wide" id="off-retry">Try again</button>
+</dialog>
+
+<dialog class="dlg dlg-win" id="dlg-bigwin" aria-labelledby="win-title">
+  <h2 id="win-title">BIG WIN</h2>
+  <b class="win-amount" id="win-amount"></b>
+  <p class="muted" id="win-sub"></p>
+  <form method="dialog"><button class="btn primary">Continue</button></form>
+</dialog>
+
+<script type="module" src="js/main.js"></script>
 </body>
 </html>

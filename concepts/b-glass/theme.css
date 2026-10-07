@@ -1,0 +1,56 @@
+/* Concept B "Glass": dark navy, frosted glass, one emerald accent. Mood from the Mines 2 reference (column 5), own art. */
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
+:root {
+  --bg-page: #0a1424;
+  --glass: rgb(22 38 66 / .62); --glass-2: rgb(30 50 84 / .55); --line: rgb(255 255 255 / .09); --line-2: rgb(255 255 255 / .16);
+  --green: #3ddc84; --green-ink: #04210f; --amber: #ffb81f; --amber-ink: #2b1a00; --red: #ff4d63;
+  --text: #eaf1ff; --muted: #9fb2d1; --focus: #8ab4ff;
+  --font-display: 'Sora', 'DM Sans', system-ui, sans-serif; --font-body: 'DM Sans', system-ui, sans-serif;
+  --r-cell: 14px; --r-btn: 14px; --r-panel: 18px;
+  --gap: 14px; --pad: clamp(10px, 1.8vw, 28px);
+}
+.brand { font-weight: 700; letter-spacing: .02em; font-size: 24px; }
+.balance { padding: 8px 16px; background: var(--glass); border: 1px solid var(--line); border-radius: 999px; backdrop-filter: blur(14px); }
+.balance b { font-weight: 600; font-size: 20px; }
+.icon-btn { background: var(--glass); border: 1px solid var(--line); border-radius: var(--r-btn); backdrop-filter: blur(14px); }
+.icon-btn:hover { background: var(--glass-2); }
+
+.stat { background: var(--glass); border: 1px solid var(--line); border-radius: var(--r-panel); backdrop-filter: blur(14px); box-shadow: inset 0 1px 0 rgb(255 255 255 / .06); }
+.stat b { font-weight: 600; }
+.stat-win b { color: var(--green); }
+.ladder li { background: var(--glass); border: 1px solid var(--line); border-radius: 999px; color: var(--muted); }
+.ladder li.done { background: rgb(61 220 132 / .14); border-color: rgb(61 220 132 / .45); color: var(--green); }
+.ladder li.next { background: var(--green); border-color: var(--green); color: var(--green-ink); font-weight: 700; }
+
+.board { padding: clamp(6px, 1.2cqmin, 14px); border-radius: var(--r-panel); background: rgb(8 16 30 / .45); border: 1px solid var(--line); backdrop-filter: blur(6px); }
+.cell .face { background: linear-gradient(160deg, rgb(150 182 235 / .28), rgb(80 110 170 / .16)); border: 1px solid var(--line-2); box-shadow: inset 0 1px 0 rgb(255 255 255 / .22), 0 6px 14px rgb(0 0 0 / .3); }
+.cell.open-ready:hover:not(:disabled) .face { background: linear-gradient(160deg, rgb(170 202 255 / .4), rgb(95 130 195 / .24)); }
+.cell.is-safe .face { background: radial-gradient(circle at 50% 35%, rgb(61 220 132 / .3), rgb(10 40 40 / .6)); border-color: rgb(61 220 132 / .6); box-shadow: 0 0 22px rgb(61 220 132 / .3), inset 0 1px 0 rgb(255 255 255 / .2); }
+.cell.is-mine .face { background: radial-gradient(circle at 50% 35%, rgb(255 77 99 / .4), rgb(60 8 20 / .7)); border-color: rgb(255 77 99 / .7); box-shadow: 0 0 26px rgb(255 77 99 / .45); }
+.cell.ghost .face, .cell.rest .face { background: rgb(20 32 54 / .55); box-shadow: none; }
+.cap { color: var(--text); text-shadow: 0 1px 3px #000; }
+.cell .ico { inset: 14%; width: 72%; height: 72%; }
+
+.banner { background: rgb(10 20 38 / .9); border: 1px solid var(--line-2); border-radius: 999px; backdrop-filter: blur(12px); }
+.banner[data-kind="win"] { border-color: rgb(61 220 132 / .6); } .banner[data-kind="win"] b { color: var(--green); }
+.banner[data-kind="loss"] { border-color: rgb(255 77 99 / .6); } .banner[data-kind="loss"] b { color: var(--red); }
+
+.dock { background: var(--glass); border: 1px solid var(--line); border-radius: var(--r-panel); backdrop-filter: blur(16px); box-shadow: inset 0 1px 0 rgb(255 255 255 / .06); }
+.app[data-layout="side"] .dock { padding: 18px; gap: 16px; }
+.step { background: var(--glass-2); border: 1px solid var(--line); border-radius: var(--r-btn); }
+.step:not(:disabled):hover { background: rgb(60 90 140 / .5); }
+.stepper output, .stepper input { background: rgb(8 16 30 / .6); border-radius: var(--r-btn); color: var(--text); font-weight: 600; }
+.stepper input:focus { outline: 2px solid var(--green); }
+.chip, .seg-btn { background: var(--glass-2); border: 1px solid var(--line); border-radius: var(--r-btn); color: var(--text); }
+.chip:not(:disabled):hover, .seg-btn:not(:disabled):hover { background: rgb(60 90 140 / .5); }
+.chip.on, .seg-btn[aria-checked="true"] { background: var(--green); border-color: var(--green); color: var(--green-ink); }
+.risk[data-level="low"] { color: var(--green); } .risk[data-level="mid"] { color: var(--amber); } .risk[data-level="high"] { color: var(--red); }
+.step:disabled, .chip:disabled, .seg-btn:disabled { opacity: .5; }
+
+.action { border-radius: var(--r-btn); background: linear-gradient(#5be99b, var(--green)); color: var(--green-ink); box-shadow: 0 8px 24px rgb(61 220 132 / .28), inset 0 1px 0 rgb(255 255 255 / .5); }
+.action[data-mode="cash"] { background: linear-gradient(#ffd25c, var(--amber)); color: var(--amber-ink); box-shadow: 0 8px 24px rgb(255 184 31 / .3), inset 0 1px 0 rgb(255 255 255 / .5); }
+.action:disabled { background: rgb(60 78 110 / .6); color: #aebbd3; box-shadow: none; }
+.toast { background: rgb(60 12 22 / .95); border: 1px solid var(--red); border-radius: var(--r-btn); color: #ffd3da; }
+.help { background: #101e36; color: var(--text); border: 1px solid var(--line-2); border-radius: var(--r-panel); }
+
+.app { background: linear-gradient(rgb(6 12 24 / .25), rgb(6 12 24 / .5)), url("assets/bg.webp") center / cover no-repeat, var(--bg-page); }
