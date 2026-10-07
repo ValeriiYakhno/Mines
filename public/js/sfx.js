@@ -15,11 +15,14 @@ const LOOP_FADE_S = 0.2;              // fade in/out when a loop starts/stops, s
 export class SfxPlayer {
   constructor() {
     this.enabled = false;
+    this.master = 1;              // 0..1 from the Settings slider
     this.loops = {};              // name -> { source, gain }
     this.wanted = new Set();      // loops that should be playing; a decode finishing after stopLoop must not start one
   }
 
   _load(file) { return loadBuffer(BASE + file); }
+
+  setVolume(v) { this.master = v; for (const [name, l] of Object.entries(this.loops)) rampGain(l.gain, (VOLUME[name] ?? 0.5) * v, 0.1); }
 
   setEnabled(on) {
     if (on === this.enabled) return;
@@ -35,7 +38,7 @@ export class SfxPlayer {
       if (!this.enabled) return;
       const ctx = getCtx();
       const gain = ctx.createGain();
-      gain.gain.value = VOLUME[name] ?? 0.5;
+      gain.gain.value = (VOLUME[name] ?? 0.5) * this.master;
       gain.connect(ctx.destination);
       const source = ctx.createBufferSource();
       source.buffer = buffer;
@@ -58,7 +61,7 @@ export class SfxPlayer {
       source.loop = true;
       source.connect(gain);
       source.start();
-      rampGain(gain, VOLUME[name] ?? 0.5, LOOP_FADE_S);
+      rampGain(gain, (VOLUME[name] ?? 0.5) * this.master, LOOP_FADE_S);
       this.loops[name] = { source, gain };
     }).catch(err => { this.wanted.delete(name); console.error('sfx: failed to load', CLIPS[name], err); });
   }

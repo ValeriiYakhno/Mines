@@ -6,6 +6,7 @@ import { round2 } from './game.js';
 const $ = id => document.getElementById(id);
 const fmt = n => n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const fmtX = n => 'x' + (n >= 1000 ? Math.round(n).toLocaleString('en-US') : n.toFixed(2));
+const fmtM = n => (n >= 1000 ? Math.round(n).toLocaleString('en-US') : n.toFixed(2)) + '\u00D7';
 const tiles = n => (n === 1 ? '1 tile' : n + ' tiles');
 const side = cells => Math.round(Math.sqrt(cells));
 const store = {
@@ -17,10 +18,10 @@ export function mountUI(game, { music, sfx } = {}) {
   const phoneMQ = matchMedia('(max-width: 899px), (orientation: portrait)');
   const maxSide = () => (phoneMQ.matches ? GAME.phoneMaxSide : 9);
   const el = {
-    app: $('app'), board: $('board'), banner: $('banner'), hint: $('hint'), ladder: $('ladder'), balance: $('balance'), cur: $('cur'),
+    app: $('app'), board: $('board'), hint: $('hint'), hist: $('history-track'), balance: $('balance'), cur: $('cur'),
     lock: $('lock-note'), settings: $('settings'), betIn: $('bet-in'), minesVal: $('mines-val'), risk: $('risk'),
     fieldBtn: $('field-btn'), fieldVal: $('field-val'), fieldList: $('field-list'),
-    roTitle: $('ro-title'), roValue: $('ro-value'), roSub: $('ro-sub'), action: $('action'), aMain: $('a-main'), aSub: $('a-sub'),
+    roTitle: $('ro-title'), roValue: $('ro-value'), action: $('action'), aMain: $('a-main'), aSub: $('a-sub'),
     toast: $('toast'), pop: $('settings-pop'), scrim: $('scrim'),
   };
   const ui = { unlocked: false, wantMusic: false, wantSfx: false, maxSide };
@@ -36,7 +37,7 @@ export function mountUI(game, { music, sfx } = {}) {
     for (let i = 0; i < game.cells; i++) {
       const b = document.createElement('button');
       b.className = 'cell'; b.dataset.i = i; b.setAttribute('aria-label', `Tile ${i + 1}`);
-      b.innerHTML = '<span class="plus" aria-hidden="true">+</span><span class="gem"></span><span class="dot"></span><span class="cap"></span>';
+      b.innerHTML = '<span class="plus" aria-hidden="true">+</span><span class="gem"></span><span class="dot"></span>';
       el.board.appendChild(b);
     }
     syncBoard();
@@ -47,15 +48,12 @@ export function mountUI(game, { music, sfx } = {}) {
   }
   function syncBoard() {            // classes from the Game state (after init, resume, round start)
     const r = game.round;
-    el.board.querySelectorAll('.cell').forEach(c => { c.className = 'cell'; c.querySelector('.cap').textContent = ''; });
+    el.board.querySelectorAll('.cell').forEach(c => { c.className = 'cell'; });
     if (!r || r.cells !== game.cells) return;
-    r.opened.forEach((cell, k) => revealSafe(cell, game.ladder[k], false));
+    r.opened.forEach(cell => revealSafe(cell, false));
     if (r.status !== 'active' && r.minesAt) revealRest(r);
   }
-  function revealSafe(i, mult, animate = true) {
-    const c = el.board.children[i]; c.classList.add('is-safe'); if (animate) c.classList.add('reveal');
-    c.querySelector('.cap').textContent = mult ? fmtX(mult) : '';
-  }
+  function revealSafe(i, animate = true) { const c = el.board.children[i]; c.classList.add('is-safe'); if (animate) c.classList.add('reveal'); }
   function revealMine(i) { el.board.children[i].classList.add('is-mine', 'reveal'); }
   function revealRest(r) {
     [...el.board.children].forEach((c, i) => {
@@ -96,33 +94,24 @@ export function mountUI(game, { music, sfx } = {}) {
     else if (playing) { el.aMain.textContent = 'PICK A TILE'; el.aSub.textContent = 'Open any tile to start'; a.disabled = true; }
     else { el.aMain.textContent = last ? 'PLAY AGAIN' : 'PLAY'; el.aSub.textContent = `Bet ${fmt(g.bet)} ${g.currency}`; a.disabled = !g.canBet; }
 
-    // readout card
-    const lad = g.ladder, nextM = lad[step];
-    if (playing && step > 0) { el.roTitle.textContent = 'Current win'; el.roValue.textContent = `${fmt(r.win)} ${g.currency}`; el.roSub.textContent = `${fmtX(lad[step - 1])}  |  next tile ${nextM ? `${fmtX(nextM)} = ${fmt(g.possibleWin)} ${g.currency}` : 'is the last'}`; }
-    else if (playing) { el.roTitle.textContent = 'Possible win'; el.roValue.textContent = `${fmt(g.possibleWin ?? 0)} ${g.currency}`; el.roSub.textContent = `${fmtX(nextM)} on the first tile`; }
-    else if (last) { el.roTitle.textContent = 'Last round'; el.roValue.textContent = `${last.kind === 'mine' ? '' : '+'}${fmt(last.payout)} ${g.currency}`; el.roSub.textContent = last.kind === 'mine' ? `Mine hit after ${tiles(last.step)}` : `${fmtX(last.multiplier)} after ${tiles(last.step)}`; }
-    else { el.roTitle.textContent = 'Possible win'; el.roValue.textContent = lad.length ? `${fmt(g.possibleWin)} ${g.currency}` : '-'; el.roSub.textContent = lad.length ? `${fmtX(lad[0])} on the first tile` : ''; }
-
-    // banner + hint
-    const b = el.banner; let kind = 'hint', t = '', s = '';
-    if (!playing && last && last.kind === 'mine') { kind = 'loss'; t = 'Mine hit'; s = `Bet ${fmt(last.bet)} ${g.currency} lost`; }
-    else if (!playing && last) { kind = 'win'; t = `+${fmt(last.payout)} ${g.currency}`; s = `${fmtX(last.multiplier)} after ${tiles(last.step)}`; }
-    else if (playing && step > 0) { t = `${step} safe`; s = `Next tile ${nextM ? fmtX(nextM) : 'is the last'}`; }
-    else if (playing) { t = 'Open a tile'; s = 'Cash out is available after the first safe tile'; }
-    else { t = 'Ready'; s = 'Choose mines, field and bet, then press Play'; }
-    b.dataset.kind = kind; b.firstElementChild.textContent = t; b.lastElementChild.textContent = s;
+    // readout card: title and value only
+    const lad = g.ladder;
+    if (playing && step > 0) { el.roTitle.textContent = 'Current win'; el.roValue.textContent = `${fmt(r.win)} ${g.currency}`; }
+    else if (playing) { el.roTitle.textContent = 'Possible win'; el.roValue.textContent = `${fmt(g.possibleWin ?? 0)} ${g.currency}`; }
+    else if (last) { el.roTitle.textContent = 'Last round'; el.roValue.textContent = `${last.kind === 'mine' ? '' : '+'}${fmt(last.payout)} ${g.currency}`; }
+    else { el.roTitle.textContent = 'Possible win'; el.roValue.textContent = lad.length ? `${fmt(g.possibleWin)} ${g.currency}` : '-'; }
     el.hint.textContent = !playing && last ? 'Press Play again for a new round' : playing ? 'Open tiles. Cash out any time.' : 'Set your bet and press Play';
 
-    // 3 multiplier chips
+    // history strip: every step with its multiplier; reached = done, the next one = current while playing (as in the Figma layout)
     const idx = playing ? step : last ? last.step : 0;
-    const chips = [];
-    if (playing || last) { // reached steps are done, the next one is current (while playing)
-      if (idx >= 2 && !playing) chips.push([lad[idx - 2], 'done']);
-      if (idx >= 1) chips.push([lad[idx - 1], 'done']);
-      if (lad[idx] !== undefined) chips.push([lad[idx], playing ? 'current' : '']);
-      if (playing && lad[idx + 1] !== undefined) chips.push([lad[idx + 1], '']);
-    } else lad.slice(0, 3).forEach((m, i) => chips.push([m, i === 0 ? 'current' : '']));
-    el.ladder.innerHTML = chips.slice(-3).map(([m, c]) => `<span class="chip ${c}">${fmtX(m)}</span>`).join('');
+    const key = lad.join();
+    if (el.hist.dataset.key !== key) { el.hist.dataset.key = key; el.hist.innerHTML = lad.map((m, i) => `<span class="step-chip" data-s="${i + 1}"><b>${i + 1}</b><i></i><span>${fmtM(m)}</span></span>`).join(''); }
+    el.hist.querySelectorAll('.step-chip').forEach(c => { const n = +c.dataset.s; c.className = 'step-chip' + (n <= idx ? ' done' : (playing || !last) && n === idx + 1 ? ' current' : ''); });
+    const focus = el.hist.querySelector('.current') || [...el.hist.querySelectorAll('.done')].pop() || el.hist.firstElementChild;
+    if (focus && el.hist.dataset.focus !== `${key}:${focus.dataset.s}:${focus.className}`) {   // scroll only when the focus moved, so repeated renders do not restart the animation
+      el.hist.dataset.focus = `${key}:${focus.dataset.s}:${focus.className}`;
+      el.hist.scrollTo({ left: focus.offsetLeft - el.hist.clientWidth / 2 + focus.clientWidth / 2, behavior: 'instant' });
+    }
   }
   const act = async fn => { const p = fn(); render(); await p; render(); };
   function toast(msg) { el.toast.textContent = msg; el.toast.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => el.toast.classList.remove('show'), 3200); }
@@ -138,15 +127,30 @@ export function mountUI(game, { music, sfx } = {}) {
     sw.addEventListener('click', () => set(sw.getAttribute('aria-checked') !== 'true'));
   };
   bindSwitch('sw-turbo', 'minesTurbo', v => document.documentElement.classList.toggle('turbo', v), '0');
-  // audio can only start after a user gesture: the players are enabled on the first pointerdown (js/main.js)
-  bindSwitch('sw-music', 'minesMusic', v => { ui.wantMusic = v; if (ui.unlocked) music?.setEnabled(v); }, '1');
-  bindSwitch('sw-sfx', 'minesSfx', v => { ui.wantSfx = v; if (ui.unlocked) sfx?.setEnabled(v); }, '1');
+  // audio: master mute button next to the gear, volume sliders in Settings. Players start only after a user gesture (js/main.js).
+  let muted = store.get('minesMuted') === '1';
+  const vol = { music: +(store.get('minesMusicVol') ?? 70), sfx: +(store.get('minesSfxVol') ?? 70) };
+  const applyAudio = () => {
+    if (!ui.unlocked) return;
+    music?.setVolume(vol.music / 100); sfx?.setVolume(vol.sfx / 100);
+    music?.setEnabled(!muted && vol.music > 0); sfx?.setEnabled(!muted && vol.sfx > 0);
+  };
+  ui.applyAudio = applyAudio;
+  const paintMute = () => { $('btn-sound').setAttribute('aria-pressed', String(muted)); $('btn-sound').setAttribute('aria-label', muted ? 'Sound off' : 'Sound on'); };
+  $('btn-sound').addEventListener('click', () => { muted = !muted; store.set('minesMuted', muted ? '1' : '0'); paintMute(); applyAudio(); });
+  for (const [k, key] of [['music', 'minesMusicVol'], ['sfx', 'minesSfxVol']]) {
+    const input = $('rng-' + k), out = $('out-' + k);
+    const paint = () => { input.value = vol[k]; input.style.setProperty('--v', vol[k] + '%'); out.textContent = vol[k] + '%'; };
+    input.addEventListener('input', () => { vol[k] = +input.value; store.set(key, String(vol[k])); paint(); applyAudio(); });
+    paint();
+  }
+  paintMute();
 
   // ------------------------------------------------------------------ wiring
   game.on('board', () => { buildBoard(); buildFieldList(); });
   game.on('ladder', render);
   game.on('roundStart', () => { last = null; syncBoard(); });
-  game.on('cell', e => { if (e.safe) revealSafe(e.cell, e.multiplier); else revealMine(e.cell); });
+  game.on('cell', e => { if (e.safe) revealSafe(e.cell); else revealMine(e.cell); });
   game.on('roundEnd', e => {
     last = e; revealRest(game.round);
     if (e.kind === 'mine') { el.board.classList.remove('shake'); void el.board.offsetWidth; el.board.classList.add('shake'); }

@@ -28,6 +28,7 @@
   <header class="top">
     <div class="balance"><span class="lbl">Balance</span><b id="balance">0.00</b><i id="cur">FUN</i></div>
     <div class="top-actions">
+      <button class="icon-btn" id="btn-sound" aria-label="Sound" aria-pressed="false"><span>&#9834;</span></button>
       <button class="icon-btn" id="btn-settings" aria-label="Settings" aria-haspopup="true" aria-expanded="false">&#9881;</button>
       <button class="icon-btn" id="btn-help" aria-label="How to play">?</button>
     </div>
@@ -36,17 +37,15 @@
       <h2>Settings</h2>
       <button class="row-link" id="row-info">Information<span aria-hidden="true">&rsaquo;</span></button>
       <div class="row-toggle"><span id="lbl-turbo">Turbo mode</span><button class="switch" id="sw-turbo" role="switch" aria-checked="false" aria-labelledby="lbl-turbo"><i></i></button></div>
-      <div class="row-toggle"><span id="lbl-music">Music</span><button class="switch" id="sw-music" role="switch" aria-checked="true" aria-labelledby="lbl-music"><i></i></button></div>
-      <div class="row-toggle"><span id="lbl-sfx">Sound effects</span><button class="switch" id="sw-sfx" role="switch" aria-checked="true" aria-labelledby="lbl-sfx"><i></i></button></div>
+      <div class="row-slider"><label for="rng-music">Music</label><output id="out-music" for="rng-music">70%</output><input type="range" id="rng-music" min="0" max="100" step="1" value="70"></div>
+      <div class="row-slider"><label for="rng-sfx">Sound effects</label><output id="out-sfx" for="rng-sfx">70%</output><input type="range" id="rng-sfx" min="0" max="100" step="1" value="70"></div>
       <button class="btn primary pop-done" id="pop-done">Done</button>
     </div>
   </header>
 
-  <div class="banner" id="banner" role="status"><b></b><span></span></div>
-
   <div class="board-wrap"><div class="board" id="board" role="group" aria-label="Game board"></div></div>
   <p class="hint" id="hint"></p>
-  <div class="ladder" id="ladder" aria-label="Next multipliers"></div>
+  <div class="history" id="history" aria-label="Multiplier steps"><div class="history-track" id="history-track"></div></div>
 
   <aside class="panel" id="panel">
     <div class="logo-ph">MINES</div>
@@ -79,7 +78,7 @@
       </div>
     </div>
     <div class="spacer"></div>
-    <div class="readout" id="readout"><span class="lbl" id="ro-title"></span><b id="ro-value"></b><small id="ro-sub"></small></div>
+    <div class="readout" id="readout"><span class="lbl" id="ro-title"></span><b id="ro-value"></b></div>
     <button class="action" id="action"><span class="a-main" id="a-main">PLAY</span><span class="a-sub" id="a-sub"></span></button>
   </aside>
 </div>

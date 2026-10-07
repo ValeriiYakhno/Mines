@@ -1,13 +1,12 @@
 /* Phone composition (narrow or portrait): top bar, banner, 3 chips, board, one control dock at the bottom. */
 @media (max-width: 899px), (orientation: portrait) {
-  .app { padding: 10px; gap: 16px; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto auto minmax(0, 1fr) auto; grid-template-areas: "top" "banner" "ladder" "board" "panel"; }
+  .app { padding: 10px; gap: 16px; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto minmax(0, 1fr) auto; grid-template-areas: "top" "history" "board" "panel"; }
   .hint, .logo-ph, .readout, .lock-note, .bet-chips, .g-bet .chips { display: none; }
   .loading .logo-ph { display: grid; width: min(280px, 80vw); min-height: 96px; font-size: 28px; }
   .top { min-height: 44px; }
   .balance { padding: 8px 14px; } .balance .lbl, .balance i { display: none; } .balance b { font-size: 18px; }
-  .icon-btn { width: 40px; height: 40px; }
-  .banner { min-height: 44px; padding: 8px 20px; } .banner b { font-size: 18px; }
-  .ladder { margin-top: 0; gap: 10px; } .chip { min-height: 36px; padding: 0 16px; font-size: 15px; }
+  .icon-btn { width: 40px; height: 40px; } .top-actions { gap: 8px; }
+    .history { margin-top: 0; width: 100%; } .history-track { gap: 10px; padding: 2px 24px; } .step-chip { min-height: 36px; padding: 0 14px; font-size: 15px; } .chip { min-height: 36px; padding: 0 16px; font-size: 15px; }
   .board { --pad: 10px; --gap: 6px; border-radius: 20px; }
   .board[data-n="6"] { --gap: 5px; }
   .cell { border-width: 1.5px; border-radius: 12px; }

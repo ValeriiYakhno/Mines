@@ -26,7 +26,7 @@ const music = new MusicPlayer(), sfx = new SfxPlayer();
 const ui = mountUI(game, { music, sfx });
 addEventListener('pointerdown', () => {            // browsers allow audio only after a gesture
   if (ui.unlocked) return;
-  ui.unlocked = true; music.setEnabled(ui.wantMusic); sfx.setEnabled(ui.wantSfx);
+  ui.unlocked = true; ui.applyAudio();
 }, { once: true, capture: true });
 
 // ------------------------------------------------------------------ tutorial
