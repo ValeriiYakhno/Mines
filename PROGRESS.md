@@ -35,12 +35,13 @@
 - Nothing runs yet: `index.html` is an empty stage.
 
 ## Open questions
-- Real server protocol for Minefield (see Not verified) and the real bet limits.
-- Do we need the single-row boards (3..9 cells) or only squares? Cell label format for the UI (emulator source uses letter+number, and its letter/number order is not the board header order).
+- Real server protocol for Minefield and the real bet limits: the user will ask the backend team.
+- Do we need the single-row boards (3..9 cells in one row) or only squares? Asked, waiting for the answer (check the Figma boards).
 - Spine: undecided (3.8.75 or none).
 - Final game name (working title "Mines").
 
 ## Decisions
+- No cell labels (letters/digits) in the design: cells are only row-major indices, UI shows no coordinates.
 - Cells are row-major indices 0..cells-1 everywhere in code; labels are a UI matter.
 - The mock server owns the multiplier math; the client only multiplies bet by the ladder for the "possible win" display, the real payout always comes from the server.
 - `api.pdf` is stored in `docs/` (third-party document, private repo).
