@@ -23,7 +23,7 @@ window.POSTHOG_CONFIG = {
    When the game gets its own domain, add it to PROD_HOSTS (this is the only change needed here).
    The og:url / og:image address in index.html <head> is static HTML, so change it in the same commit. */
 var PROD_HOSTS = [
-  // 'mines.<account-subdomain>.workers.dev',   // TODO step 3: the real Worker host
+  'mines.tugfish.workers.dev',
   // 'play.example.com',   // own domain: uncomment and put the real host here
 ];
 window.MINES_ENV = (function (host) {
