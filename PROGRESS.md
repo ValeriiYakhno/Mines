@@ -22,7 +22,7 @@
   - `tests/game.test.mjs`: 15 checks, run with `npm test` (node:test, no dependencies), all pass.
 
 ## Rules (measured on the emulator, 5x5 / 3 mines unless noted)
-- Board: square 3x3..9x9, or a single row of 3..9 cells ("number of cells"). Mines: 1..cells-1. Steps = safe cells, but see the cap below.
+- Board: square 3x3..9x9 (the emulator also has single rows of 3..9 cells, not used). Mines: 1..cells-1. Steps = safe cells, but see the cap below.
 - Multiplier after n safe cells = max(1.00, round2(1 / (p(n) * 1.05))), p(n) = chance to survive n openings (RTP ~95.2%). Checked on 5x5 m=1,3,5,12,24 and 9x9 m=10 (52 rows).
 - Cap: a ladder stops before the first step above 100000x (5x5 m=12 has 11 steps of 13 safe cells; 9x9 m=10 has 52 of 71). Reaching the last step pays out automatically.
 - Bet: balance is charged at bet; win is credited at Collect (or automatically at the last step); a mine = payout 0. Collect at step 0 does nothing. Win = bet * multiplier, 2 decimals.
@@ -36,11 +36,11 @@
 
 ## Open questions
 - Real server protocol for Minefield and the real bet limits: the user will ask the backend team.
-- Do we need the single-row boards (3..9 cells in one row) or only squares? Asked, waiting for the answer (check the Figma boards).
 - Spine: undecided (3.8.75 or none).
 - Final game name (working title "Mines").
 
 ## Decisions
+- Only square boards (3x3..9x9); the emulator's single-row mode is dropped by the user's decision (2026-10-08). `GAME.boardCells` lists the allowed cell counts.
 - No cell labels (letters/digits) in the design: cells are only row-major indices, UI shows no coordinates.
 - Cells are row-major indices 0..cells-1 everywhere in code; labels are a UI matter.
 - The mock server owns the multiplier math; the client only multiplies bet by the ladder for the "possible win" display, the real payout always comes from the server.

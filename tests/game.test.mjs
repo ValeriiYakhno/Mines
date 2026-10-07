@@ -76,14 +76,14 @@ test('loss: a mine ends the round, no payout, layout revealed', async () => {
   assert.equal(game.canOpen(3), false);
 });
 
-test('clearing every step pays out automatically (3 cells, 1 mine)', async () => {
-  const { game } = await start(fixed(0), g => g.setBoard({ cells: 3, mines: 1 }));
+test('clearing every step pays out automatically (3x3 board, 7 mines)', async () => {
+  const { game } = await start(fixed(0, 1, 2, 3, 4, 5, 6), g => g.setBoard({ cells: 9, mines: 7 }));
   assert.equal(game.ladder.length, 2);
   game.setBet(2);
   await game.placeBet();
-  await game.open(1);
+  await game.open(7);
   assert.equal(game.state, 'playing');
-  await game.open(2);
+  await game.open(8);
   assert.equal(game.state, 'idle');
   assert.equal(game.round.status, 'cleared');
   assert.equal(game.round.payout, round2(2 * game.ladder[1]));

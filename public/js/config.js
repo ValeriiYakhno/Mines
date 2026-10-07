@@ -9,8 +9,8 @@ export const GAME = {
   minBet: 0.1,
   maxBet: 100,
   bets: [0.1, 0.2, 0.5, 0.8, 1, 1.5, 2, 3, 5, 10, 15, 20, 30, 50, 80, 100],
-  // allowed cell counts: square boards 3x3..9x9 and single rows of 3..9 cells (same as the emulator)
-  boardCells: [3, 4, 5, 6, 7, 8, 9, 16, 25, 36, 49, 64, 81],
+  // allowed cell counts: square boards 3x3..9x9 only (the single-row mode of the emulator is not in the design)
+  boardCells: [9, 16, 25, 36, 49, 64, 81],
   defaultCells: 25,
   defaultMines: 3,
 };
