@@ -31,6 +31,15 @@
 - Art: generated with Higgsfield (model nano_banana_2, the only one the free plan accepts), white backgrounds cut out locally (Pillow flood fill), converted to WebP. Sources `*.src.png` are git-ignored. Higgsfield credits: 12 before, 0.5 after (7 images + 1 failed cut-out; nano_banana_2 costs ~1.5 credits per image, I did not preflight it).
 - Skills installed globally: `design-taste-frontend` (leonxlnx/taste-skill) and `awesome-design-md` (wearescientist/awesome-design-md). The taste skill is for landing pages, so only its general rules were used (one accent, shape lock, contrast, no AI slop); icons are Phosphor.
 
+## Figma layout mockup (2026-10-08)
+- The user rejected the concepts (concept B's general design was "not bad"). Reference they like: "Frame 1" (node 23:3) on page `reference`, the "Mines Hazard Zone" screens: calm left panel (logo, bet, mines, grid, one big Play button), board in the middle, balance chip top-left of the stage, settings top-right, a few multiplier chips under the board. No history, no extra buttons.
+- Mockup built on page `design` (node 19:2) as a structural layout only (neutral wireframe palette; the user will add the real visual design themselves):
+  - Frames (desktop 1920x1080): `Desktop / 1 Ready` 27:2, `2 In round` 27:122, `3 Mine hit` 27:252, `4 Cashed out` 27:385. Mobile 390x844: `Mobile / 1 Ready` 29:213, `2 In round` 29:317, `3 Mine hit` 29:430.
+  - Layout: left control panel (logo placeholder, bet stepper + 1/2 2x Max, mines stepper + risk label, field select, readout card, one action button), board 5x5, banner above the board, 3 ladder chips under it. Settings are dimmed and locked only while a round is running. On phones: balance and icons on top, banner, ladder chips, board, dock with bet / mines + field / action.
+  - Components frame `Components` (26:17): Icon button, Stepper (size lg/sm), Select (size lg/sm), Action button (mode play/cash/wait), Chip (state default/current/done), Readout, Banner (kind hint/win/loss), Cell (state closed/safe/mine/ghost/rest x size lg/sm). Colour variables in collection "Mines Color (wireframe)" (14 placeholders). Fonts: Sora + DM Sans (placeholders). Gem and mine are placeholder shapes named "(replace with art)".
+- Figma API notes: paint-level opacity on variable-bound fills is ignored (use tint variables); position/size overrides of inner layers in instances do not stick, so sizes are component variants.
+- Not in the mockup yet (ask the user): loading, offline, tutorial/help dialog, sound settings, field size dropdown open state, mines count picker, other board sizes (3x3..9x9), win animation/big win.
+
 ## Rules (measured on the emulator, 5x5 / 3 mines unless noted)
 - Board: square 3x3..9x9 (the emulator also has single rows of 3..9 cells, not used). Mines: 1..cells-1. Steps = safe cells, but see the cap below.
 - Multiplier after n safe cells = max(1.00, round2(1 / (p(n) * 1.05))), p(n) = chance to survive n openings (RTP ~95.2%). Checked on 5x5 m=1,3,5,12,24 and 9x9 m=10 (52 rows).
