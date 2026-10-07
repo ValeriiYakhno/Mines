@@ -54,6 +54,7 @@
   - Alignment: pills, buttons and icon buttons are inline-flex centred, line-height 1, plus text-box-trim (cap height) where supported. The old ladder chips were inline spans, which is why digits sat high.
   - Open: with the banner gone, a finished round is shown only by the board (mines revealed), the "Last round" card (desktop) and the action button label. On phones the Last round card is hidden, so the result has no text there. Decide: show a compact result line on phones or accept it.
   - Open: on phones the history strip shows 2-3 pills at a time (scrolls); Figma shows 3 clipped pills.
+- Fix (user, 2026-10-08): on desktop the Cash out button repeated the win amount of the "Current win" card. Now the button shows only "CASH OUT" on desktop (Figma: sub text hidden in the cash variants of the desktop screens; game: CSS). Phones keep the amount on the button because they have no card.
 - Not in the mockup: win/lose animations, tile hover/pressed states, keyboard focus states, landscape phone, tablet.
 
 ## Rules (measured on the emulator, 5x5 / 3 mines unless noted)

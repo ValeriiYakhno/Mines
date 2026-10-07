@@ -160,3 +160,6 @@ button.chip:not(:disabled):hover { background: var(--line); }
 @supports (text-box: trim-both cap alphabetic) {
   .step-chip, .chip, .btn, .icon-btn > span { text-box: trim-both cap alphabetic; }
 }
+
+/* desktop: the "Current win" card already shows the amount, so the Cash out button does not repeat it (phones have no card and keep it) */
+@media (min-width: 900px) and (orientation: landscape) { .action[data-mode="cash"] .a-sub { display: none; } }
