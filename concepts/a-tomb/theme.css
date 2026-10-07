@@ -1,0 +1,57 @@
+/* Concept A "Tomb": carved stone, gold trim, turquoise reward. Mood from the Mummy's Mines reference (column 2), own art. */
+@import url('https://fonts.googleapis.com/css2?family=Lilita+One&family=Outfit:wght@400;500;600;700&display=swap');
+:root {
+  --bg-page: #14102a;
+  --panel: #2a2150; --panel-2: #1d1740; --panel-line: #6b5a2e;
+  --gold: #e9b441; --gold-2: #f7d77a; --gold-dark: #7a5410; --gold-ink: #2b1a02;
+  --teal: #38e0c6; --ember: #ff6a3d; --ember-dark: #5a1608;
+  --text: #f6ecd6; --muted: #bfb0d6; --focus: #7ff0dd;
+  --font-display: 'Lilita One', 'Outfit', system-ui, sans-serif; --font-body: 'Outfit', system-ui, sans-serif;
+  --r-cell: 12px; --r-btn: 14px; --r-panel: 18px;
+  --gap: 12px; --pad: clamp(10px, 1.6vw, 24px);
+}
+.brand { color: var(--gold-2); text-shadow: 0 2px 0 var(--gold-dark); }
+.balance b { color: var(--gold-2); }
+.icon-btn { background: var(--panel-2); border: 1px solid var(--panel-line); border-radius: var(--r-btn); color: var(--gold-2); }
+.icon-btn:hover { background: var(--panel); }
+
+.stat { background: linear-gradient(var(--panel), var(--panel-2)); border: 1px solid var(--panel-line); border-radius: var(--r-panel); }
+.stat b { color: var(--text); }
+.stat-win b { color: var(--teal); }
+.ladder li { background: var(--panel-2); border: 1px solid #3a2f66; border-radius: 999px; color: var(--muted); }
+.ladder li.done { background: #1d4a45; border-color: #2f8f84; color: var(--teal); }
+.ladder li.next { background: var(--gold); border-color: var(--gold-2); color: var(--gold-ink); font-weight: 700; }
+
+.board { padding: clamp(8px, 1.6cqmin, 18px); border-radius: var(--r-panel); background: rgb(16 12 36 / .72); border: 2px solid var(--panel-line); box-shadow: inset 0 0 0 2px rgb(233 180 65 / .12), 0 18px 50px rgb(0 0 0 / .45); }
+.cell .face { background: url('assets/tile.webp') center / 100% 100% no-repeat; box-shadow: 0 3px 0 rgb(0 0 0 / .35); }
+.cell:disabled:not(.is-safe):not(.is-mine):not(.ghost):not(.rest) { filter: saturate(.7) brightness(.85); }
+.cell.is-safe .face { background: radial-gradient(circle at 50% 40%, #35306a, #1a1538); box-shadow: inset 0 3px 8px rgb(0 0 0 / .6), 0 0 0 1px #3f3880; }
+.cell.is-mine .face { background: radial-gradient(circle at 50% 40%, #7a2412, #2a0a05); box-shadow: inset 0 3px 8px rgb(0 0 0 / .6), 0 0 22px rgb(255 106 61 / .55); }
+.cell.ghost .face, .cell.rest .face { filter: brightness(.5) saturate(.6); }
+.cell.ghost .face { background: radial-gradient(circle at 50% 40%, #4a1a12, #1d0a06); box-shadow: inset 0 3px 8px rgb(0 0 0 / .6); filter: none; }
+.cap { color: var(--gold-2); text-shadow: 0 1px 2px #000; }
+.cell.is-safe .ico { filter: drop-shadow(0 4px 8px rgb(56 224 198 / .45)); }
+
+.banner { background: rgb(16 12 36 / .92); border: 1px solid var(--panel-line); border-radius: 999px; }
+.banner[data-kind="win"] { border-color: var(--teal); } .banner[data-kind="win"] b { color: var(--teal); }
+.banner[data-kind="loss"] { border-color: var(--ember); } .banner[data-kind="loss"] b { color: var(--ember); }
+.banner b { color: var(--gold-2); }
+
+.dock { background: linear-gradient(var(--panel), var(--panel-2)); border: 2px solid var(--panel-line); border-radius: var(--r-panel); }
+.step { background: var(--panel-2); border: 1px solid var(--panel-line); border-radius: var(--r-btn); color: var(--gold-2); }
+.step:not(:disabled):hover { background: #3a2f66; }
+.stepper output, .stepper input { background: #120e2a; border-radius: var(--r-btn); color: var(--text); }
+.stepper input:focus { outline: 2px solid var(--gold); }
+.chip, .seg-btn { background: var(--panel-2); border: 1px solid #4a3d82; border-radius: var(--r-btn); color: var(--text); }
+.chip:not(:disabled):hover, .seg-btn:not(:disabled):hover { background: #3a2f66; }
+.chip.on, .seg-btn[aria-checked="true"] { background: var(--gold); border-color: var(--gold-2); color: var(--gold-ink); }
+.risk[data-level="low"] { color: var(--teal); } .risk[data-level="mid"] { color: var(--gold-2); } .risk[data-level="high"] { color: var(--ember); }
+.step:disabled, .chip:disabled, .seg-btn:disabled { opacity: .55; }
+
+.action { border-radius: var(--r-btn); color: var(--gold-ink); background: linear-gradient(var(--gold-2), var(--gold) 55%, #c98d1c); border: 2px solid #fff3c4; box-shadow: 0 4px 0 var(--gold-dark), 0 10px 24px rgb(233 180 65 / .25); }
+.action[data-mode="cash"] { background: linear-gradient(#7ff5e2, var(--teal) 55%, #17b7a0); border-color: #d6fff7; color: #04302a; box-shadow: 0 4px 0 #0c6a5d, 0 10px 24px rgb(56 224 198 / .3); }
+.action:disabled { background: #3a3358; border-color: #4f467a; color: #a79cc8; box-shadow: none; }
+.toast { background: #3a1410; border: 1px solid var(--ember); border-radius: var(--r-btn); color: #ffd9cc; }
+.help { background: var(--panel); color: var(--text); border: 2px solid var(--panel-line); border-radius: var(--r-panel); }
+
+.app { background: linear-gradient(rgb(12 9 30 / .35), rgb(12 9 30 / .55)), url("assets/bg.webp") center / cover no-repeat, var(--bg-page); }
