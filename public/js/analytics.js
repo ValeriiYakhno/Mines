@@ -27,7 +27,7 @@ const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'ut
 
 /** first-touch attribution: the UTM tags + referrer of the very first visit, kept for later visits */
 function firstTouch() {
-  const saved = store.get('minesFirstTouch');
+  const saved = store.get('shinesAndMinesFirstTouch');
   if (saved) { try { return JSON.parse(saved); } catch { /* rewrite below */ } }
   const q = new URLSearchParams(location.search), t = {};
   UTM_KEYS.forEach(k => { t[k] = q.get(k) || null; });
@@ -35,7 +35,7 @@ function firstTouch() {
   try { ref = document.referrer ? new URL(document.referrer).hostname : null; } catch { /* opaque */ }
   t.first_referrer = ref;
   t.first_visit_ts = new Date().toISOString();
-  store.set('minesFirstTouch', JSON.stringify(t));
+  store.set('shinesAndMinesFirstTouch', JSON.stringify(t));
   return t;
 }
 
@@ -78,11 +78,11 @@ export class Analytics {
     this.game = game;
     this.debug = debug;
     // created in <head> (js/posthog.config.js) so PostHog can register it before the first event
-    const head = window.MINES_PLAYER;
-    const pid = head?.id || store.get('minesPlayerId');
+    const head = window.SHINES_AND_MINES_PLAYER;
+    const pid = head?.id || store.get('shinesAndMinesPlayerId');
     this.firstVisit = head ? head.firstVisit : !pid;
     this.playerId = pid || uid();
-    if (!pid) store.set('minesPlayerId', this.playerId);
+    if (!pid) store.set('shinesAndMinesPlayerId', this.playerId);
     this.sessionId = uid();
     this.attribution = firstTouch();
     this.device = deviceInfo();
@@ -198,8 +198,8 @@ export class Analytics {
     const e = {
       event, ts: new Date().toISOString(), seq: ++this.seq,
       session_id: this.sessionId, player_id: this.playerId, server_session: g.serverSession,
-      app_version: ANALYTICS.appVersion, game: 'mines', is_demo: g.demo, currency: g.currency,
-      env: window.MINES_ENV ?? null, is_internal: !!window.MINES_INTERNAL,   // js/posthog.config.js
+      app_version: ANALYTICS.appVersion, game: 'shines-and-mines', is_demo: g.demo, currency: g.currency,
+      env: window.SHINES_AND_MINES_ENV ?? null, is_internal: !!window.SHINES_AND_MINES_INTERNAL,   // js/posthog.config.js
       ...this.attribution, ...this.device,
       layout: document.body.classList.contains('layout-mobile') ? 'mobile' : 'desktop',
       viewport: `${document.documentElement.clientWidth}x${document.documentElement.clientHeight}`,

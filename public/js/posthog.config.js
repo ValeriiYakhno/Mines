@@ -18,15 +18,16 @@ window.POSTHOG_CONFIG = {
 /* environment, sent with every event (posthog.register in index.html + js/analytics.js):
    local   - localhost / 127.0.0.1
    prod    - ONLY the hosts listed in PROD_HOSTS below
-   preview - every other host: Workers preview builds (<version-or-branch>-mines.<account>.workers.dev),
+   preview - every other host: Workers preview builds (<version-or-branch>-shines-and-mines.<account>.workers.dev),
              pages.dev, a stray mirror, an unlisted domain. Unknown hosts must never count as prod.
    When the game gets its own domain, add it to PROD_HOSTS (this is the only change needed here).
    The og:url / og:image address in index.html <head> is static HTML, so change it in the same commit. */
 var PROD_HOSTS = [
-  'mines.tugfish.workers.dev',
+  'shines-and-mines.tugfish.workers.dev',
+  'mines.tugfish.workers.dev',   // old Worker name, remove when the old Worker is deleted
   // 'play.example.com',   // own domain: uncomment and put the real host here
 ];
-window.MINES_ENV = (function (host) {
+window.SHINES_AND_MINES_ENV = (function (host) {
   if (/^(localhost|127\.0\.0\.1|\[::1\])$/.test(host)) return 'local';
   return PROD_HOSTS.indexOf(host.toLowerCase()) !== -1 ? 'prod' : 'preview';
 })(location.hostname);
@@ -34,8 +35,8 @@ window.MINES_ENV = (function (host) {
 /* team devices: open the game once with ?internal=1 and every event from that browser carries
    is_internal: true (filter it out in PostHog: "Filter out internal and test users").
    ?internal=0 removes the mark. Remembered in localStorage, so the flag survives later visits. */
-window.MINES_INTERNAL = (function () {
-  var KEY = 'minesInternal';
+window.SHINES_AND_MINES_INTERNAL = (function () {
+  var KEY = 'shinesAndMinesInternal';
   try {
     var q = new URLSearchParams(location.search).get('internal');
     if (q === '1') localStorage.setItem(KEY, '1');
@@ -48,8 +49,8 @@ window.MINES_INTERNAL = (function () {
 
 /* player UUID (same localStorage key js/analytics.js uses): created here on the first visit so it
    exists before posthog.register(); firstVisit tells analytics.js it was just created. */
-window.MINES_PLAYER = (function () {
-  var KEY = 'minesPlayerId';
+window.SHINES_AND_MINES_PLAYER = (function () {
+  var KEY = 'shinesAndMinesPlayerId';
   try {
     var id = localStorage.getItem(KEY);
     if (id) return { id: id, firstVisit: false };

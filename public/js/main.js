@@ -44,10 +44,10 @@ function showStep() {
   $('tut-skip').hidden = step !== 0; $('tut-back').hidden = step === 0; $('tut-check').hidden = !last;
   $('tut-next').textContent = last ? 'Got it' : 'Next';
 }
-function finishTutorial() { if (step !== STEPS.length - 1 || $('tut-dont').checked) store.set('minesTutorialSeen', '1'); dlg.close(); }
+function finishTutorial() { if (step !== STEPS.length - 1 || $('tut-dont').checked) store.set('shinesAndMinesTutorialSeen', '1'); dlg.close(); }
 $('tut-next').addEventListener('click', () => { if (step < STEPS.length - 1) { step++; showStep(); } else finishTutorial(); });
 $('tut-back').addEventListener('click', () => { step--; showStep(); });
-$('tut-skip').addEventListener('click', () => { store.set('minesTutorialSeen', '1'); dlg.close(); });
+$('tut-skip').addEventListener('click', () => { store.set('shinesAndMinesTutorialSeen', '1'); dlg.close(); });
 dlg.addEventListener('cancel', e => { e.preventDefault(); finishTutorial(); });
 
 // ------------------------------------------------------------------- offline
@@ -69,5 +69,5 @@ setTimeout(() => {
   $('app').hidden = false; $('loading').classList.add('done');
   setTimeout(() => $('loading').remove(), 400);
   ui.render();
-  if (game.state !== 'offline' && store.get('minesTutorialSeen') !== '1') { step = 0; showStep(); dlg.showModal(); }
+  if (game.state !== 'offline' && store.get('shinesAndMinesTutorialSeen') !== '1') { step = 0; showStep(); dlg.showModal(); }
 }, Math.max(0, 450 - (performance.now() - t0)));
