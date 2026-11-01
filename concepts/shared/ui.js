@@ -10,7 +10,7 @@ const side = cells => Math.round(Math.sqrt(cells));
 
 const TEMPLATE = `
 <header class="top">
-  <div class="brand" aria-label="Mines">MINES</div>
+  <div class="brand" aria-label="Shines and Mines">SHINES AND MINES</div>
   <div class="balance"><span class="lbl">Balance</span><b id="balance">0.00</b><i id="cur">FUN</i></div>
   <div class="top-actions">
     <button class="icon-btn" id="snd" aria-label="Sound" aria-pressed="false"><i class="ph-bold ph-speaker-slash"></i></button>

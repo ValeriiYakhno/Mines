@@ -1,4 +1,4 @@
-# Mines
+# Shines and Mines
 
 Web demo (no backend, mock server). Working title.
 

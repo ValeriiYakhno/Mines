@@ -77,9 +77,10 @@
 - Step 4 (PostHog) postponed by the user: key stays empty, no snippet in index.html yet.
 - Real server protocol for Minefield and the real bet limits: the user will ask the backend team.
 - Spine: undecided (3.8.75 or none).
-- Final game name (working title "Mines").
+- (closed 2026-11-01) Game name decided: **Shines and Mines**.
 
 ## Decisions
+- 2026-11-01 Name: **Shines and Mines** (was the working title "Mines"). Changed: page title, logo placeholders in the game and in all Figma screens (text "SHINES AND MINES (logo)"), README, concept titles. Kept on purpose (technical, renaming would break things): Cloudflare Worker `mines` and its URL, GitHub repo `Mines`, storage keys `mines*`, globals `MINES_*`, analytics `game: 'mines'`, launch config names, the Figma file name `mines`, and the in-game word "Mines" as the label of the mine-count setting. Rename those only together with a new Worker/domain and a PostHog project.
 - Only square boards (3x3..9x9); the emulator's single-row mode is dropped by the user's decision (2026-10-08). `GAME.boardCells` lists the allowed cell counts.
 - No cell labels (letters/digits) in the design: cells are only row-major indices, UI shows no coordinates.
 - Cells are row-major indices 0..cells-1 everywhere in code; labels are a UI matter.
