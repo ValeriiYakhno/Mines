@@ -2,7 +2,7 @@
 @media (max-width: 899px), (orientation: portrait) {
   .app { padding: 10px; gap: 16px; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto minmax(0, 1fr) auto; grid-template-areas: "top" "history" "board" "panel"; }
   .hint, .logo-ph, .readout, .lock-note, .bet-chips, .g-bet .chips { display: none; }
-  .loading .logo-ph { display: grid; width: min(280px, 80vw); min-height: 96px; font-size: 28px; }
+  .loading .logo-ph { display: grid; width: min(280px, 80vw); min-height: 96px; font-size: 22px; }
   .top { min-height: 44px; }
   .balance { padding: 8px 14px; } .balance .lbl, .balance i { display: none; } .balance b { font-size: 18px; }
   .icon-btn { width: 40px; height: 40px; } .top-actions { gap: 8px; }

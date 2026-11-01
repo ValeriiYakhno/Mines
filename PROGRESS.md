@@ -3,7 +3,7 @@
 ## Links
 - GitHub: https://github.com/ValeriiYakhno/Mines (private)
 - Figma: file `DguVpT99kmgeVsB2GvEfD7`, page node `0-1` (design in progress)
-- Live: https://mines.tugfish.workers.dev/ (Cloudflare Worker `mines`, Workers Builds from `master`)
+- Live: https://mines.tugfish.workers.dev/ (old Worker `mines`); after the next deploy: https://shines-and-mines.tugfish.workers.dev/ (Worker `shines-and-mines`). Deploy with `npx wrangler deploy` (Workers Builds did not fire on push).
 - Rules: https://polishchuk.com/projects/jgame/#/mnf1
 - Old project (read-only source of shared code): E:\DistinctPlay_Projects\TugTheFish
 
@@ -77,9 +77,10 @@
 - Step 4 (PostHog) postponed by the user: key stays empty, no snippet in index.html yet.
 - Real server protocol for Minefield and the real bet limits: the user will ask the backend team.
 - Spine: undecided (3.8.75 or none).
-- Final game name (working title "Mines").
+- (closed 2026-11-01) Game name decided: **Shines and Mines**.
 
 ## Decisions
+- 2026-11-01 Name: **Shines and Mines** (was the working title "Mines"). Renamed everywhere in the repo and in Figma: page title, logo placeholders (game + all Figma screens), README, concept titles, storage keys (`shinesAndMines*`, so old saved settings reset), globals (`SHINES_AND_MINES_*`), analytics `game: 'shines-and-mines'`, launch configs, `package.json` name, `wrangler.jsonc` Worker name `shines-and-mines` (new URL https://shines-and-mines.tugfish.workers.dev/ after the next deploy; `PROD_HOSTS` lists both hosts until the old Worker `mines` is deleted). Not renamed (needs the user in a UI or is the gameplay word): GitHub repo `Mines` (Settings > General > Rename, then `git remote set-url origin ...`), Figma file name `mines` (no API), local folder `E:DistinctPlay_ProjectsMines`, the old Cloudflare Worker `mines` (delete after the new one is live), and the word "Mines" as the label of the mine-count setting.
 - Only square boards (3x3..9x9); the emulator's single-row mode is dropped by the user's decision (2026-10-08). `GAME.boardCells` lists the allowed cell counts.
 - No cell labels (letters/digits) in the design: cells are only row-major indices, UI shows no coordinates.
 - Cells are row-major indices 0..cells-1 everywhere in code; labels are a UI matter.

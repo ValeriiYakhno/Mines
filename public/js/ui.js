@@ -126,10 +126,10 @@ export function mountUI(game, { music, sfx } = {}) {
     sw.setAttribute('aria-checked', String(on)); apply(on);
     sw.addEventListener('click', () => set(sw.getAttribute('aria-checked') !== 'true'));
   };
-  bindSwitch('sw-turbo', 'minesTurbo', v => document.documentElement.classList.toggle('turbo', v), '0');
+  bindSwitch('sw-turbo', 'shinesAndMinesTurbo', v => document.documentElement.classList.toggle('turbo', v), '0');
   // audio: master mute button next to the gear, volume sliders in Settings. Players start only after a user gesture (js/main.js).
-  let muted = store.get('minesMuted') === '1';
-  const vol = { music: +(store.get('minesMusicVol') ?? 70), sfx: +(store.get('minesSfxVol') ?? 70) };
+  let muted = store.get('shinesAndMinesMuted') === '1';
+  const vol = { music: +(store.get('shinesAndMinesMusicVol') ?? 70), sfx: +(store.get('shinesAndMinesSfxVol') ?? 70) };
   const applyAudio = () => {
     if (!ui.unlocked) return;
     music?.setVolume(vol.music / 100); sfx?.setVolume(vol.sfx / 100);
@@ -137,8 +137,8 @@ export function mountUI(game, { music, sfx } = {}) {
   };
   ui.applyAudio = applyAudio;
   const paintMute = () => { $('btn-sound').setAttribute('aria-pressed', String(muted)); $('btn-sound').setAttribute('aria-label', muted ? 'Sound off' : 'Sound on'); };
-  $('btn-sound').addEventListener('click', () => { muted = !muted; store.set('minesMuted', muted ? '1' : '0'); paintMute(); applyAudio(); });
-  for (const [k, key] of [['music', 'minesMusicVol'], ['sfx', 'minesSfxVol']]) {
+  $('btn-sound').addEventListener('click', () => { muted = !muted; store.set('shinesAndMinesMuted', muted ? '1' : '0'); paintMute(); applyAudio(); });
+  for (const [k, key] of [['music', 'shinesAndMinesMusicVol'], ['sfx', 'shinesAndMinesSfxVol']]) {
     const input = $('rng-' + k), out = $('out-' + k);
     const paint = () => { input.value = vol[k]; input.style.setProperty('--v', vol[k] + '%'); out.textContent = vol[k] + '%'; };
     input.addEventListener('input', () => { vol[k] = +input.value; store.set(key, String(vol[k])); paint(); applyAudio(); });

@@ -5,7 +5,7 @@
 .progress { width: min(520px, 80vw); height: 10px; border-radius: 5px; background: var(--bg-raised); overflow: hidden; }
 .progress i { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 5px; transition: width .25s; }
 .loading p { color: var(--text-muted); font-weight: 500; }
-.logo-ph { display: grid; place-items: center; min-height: 88px; border: 1px dashed var(--line); border-radius: var(--r-card); background: var(--bg-raised); color: var(--text-muted); font: 600 28px var(--font-display); letter-spacing: .04em; }
+.logo-ph { display: grid; place-items: center; min-height: 88px; border: 1px dashed var(--line); border-radius: var(--r-card); background: var(--bg-raised); color: var(--text-muted); font: 600 28px var(--font-display); letter-spacing: .04em; text-align: center; padding: 0 12px; }
 .loading .logo-ph { width: min(520px, 80vw); min-height: 140px; font-size: 40px; border-radius: 20px; }
 
 .app {

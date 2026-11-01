@@ -2,7 +2,7 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "mines-demo",
+      "name": "shines-and-mines-demo",
       "runtimeExecutable": "npx",
       "runtimeArgs": [
         "--yes",
@@ -15,7 +15,7 @@
       "autoPort": true
     },
     {
-      "name": "mines-concepts",
+      "name": "shines-and-mines-concepts",
       "runtimeExecutable": "npx",
       "runtimeArgs": [
         "--yes",
